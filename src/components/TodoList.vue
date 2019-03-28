@@ -1,12 +1,15 @@
 <template>
   <div>
-    <input type="text" class="todo-input" @keyup.enter="addTodo" placeholder="what are you up to today?" v-model="newTodo">
+    <input type="search" class="todo-input" 
+        @keyup.enter="addTodo" 
+        placeholder="what are you up to today?" 
+        v-model="newTodo">
     <div v-for="todo in todos" :key="todo.id" class="todo-item">
         <div>
         {{ todo.title }}
         </div>
         <div class="remove-item">
-            &times
+            <img src="../../public/delete.svg" alt="" height="24px">
         </div>
     </div>
   </div>
@@ -68,5 +71,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.remove-item {
+    cursor: pointer;
+    margin-right: 14px;
+    &:hover {
+        color: black;
+    }
 }
 </style>
