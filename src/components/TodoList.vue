@@ -29,23 +29,13 @@ export default {
     return {
       newTodo: "",
       idForTodo: 3,
-      todos: [
-        {
-          id: 1,
-          title: "complete vue.js todo today",
-          complete: false,
-          editing: false
-        },
-        {
-          id: 2,
-          title: "To have the chicken dinner",
-          complete: false,
-          editing: false
-        }
-      ]
+      todos: this.todos = this.$store.state.todos,
     };
   },
   methods: {
+    getTodos() {
+      this.todos = this.$store.state.todos;
+    },
     addTodo() {
       if (this.newTodo.trim().length == 0) {
         return false;
