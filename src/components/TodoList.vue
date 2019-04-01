@@ -7,15 +7,29 @@
       placeholder="what are you up to today?"
       v-model="newTodo"
     >
-    <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
-      <div class="todo-item-left">
-        <div v-if="!todo.editing" class="todo-item-label" @dblclick="editTodo(todo)">{{ todo.title }}</div>
-        <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)">
-        <div class="remove-item" @click="removeTodo(index)">
-          <img src="../../public/delete.svg" alt height="24px">
+    <div v-if="getTodos().length > 0">
+      <div v-for="(todo, index) in getTodos()" :key="todo.id" class="todo-item">
+        <div class="todo-item-left">
+          <div
+            v-if="!todo.editing"
+            class="todo-item-label"
+            @dblclick="editTodo(todo)"
+          >{{ todo.title }}</div>
+          <input
+            v-else
+            class="todo-item-edit"
+            type="text"
+            v-model="todo.title"
+            @blur="doneEdit(todo)"
+            @keyup.enter="doneEdit(todo)"
+          >
+          <div class="remove-item" @click="removeTodo(index)">
+            <img src="../../public/delete.svg" alt height="24px">
+          </div>
         </div>
       </div>
     </div>
+    <div v-else>You have not added any todos yet.</div>
   </div>
 </template>
 
@@ -29,35 +43,29 @@ export default {
     return {
       newTodo: "",
       idForTodo: 3,
-      todos: this.todos = this.$store.state.todos,
     };
   },
   methods: {
     getTodos() {
-      this.todos = this.$store.state.todos;
+      return this.$store.getters.getTodos;
     },
     addTodo() {
       if (this.newTodo.trim().length == 0) {
         return false;
       }
-      this.todos.push({
-        id: this.idForTodo,
-        title: this.newTodo,
-        complete: false
-      }),
-        (this.newTodo = "");
-      this.idForTodo++;
+      this.$store.dispatch("addTodo", this.newTodo);
+      this.newTodo = "";
     },
     removeTodo(index) {
-      this.todos.splice(index, 1);
+      this.$store.dispatch("removeTodo", index);
     },
     editTodo(todo) {
-        todo.editing = true;
+      this.$store.dispatch('editTodo', todo);
     },
     doneEdit(todo) {
-        todo.editing = false;
+      this.$store.dispatch('doneEditing', todo);
     }
-  },
+  }
 };
 </script>
 
@@ -101,10 +109,9 @@ export default {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   &:focus {
-      outline: none;
+    outline: none;
   }
-
 }
 </style>
