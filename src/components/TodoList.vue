@@ -50,9 +50,7 @@ export default {
       return this.$store.getters.getTodos;
     },
     addTodo() {
-      if (this.newTodo.trim().length == 0) {
-        return false;
-      }
+      if (this.newTodo.trim().length == 0) return false;
       this.$store.dispatch("addTodo", this.newTodo);
       this.newTodo = "";
     },

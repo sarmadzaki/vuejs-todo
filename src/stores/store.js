@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import * as MUTAION_TYPES from './mutaion-types';
 
 Vue.use(Vuex);
 
@@ -15,10 +16,10 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    GET_TODO(state, todo) {
-      state.newTodo = todo;
+    [MUTAION_TYPES.GET_TODO](state, payload) {
+      state.newTodo = payload;
     },
-    ADD_TODO(state, payload) {
+    [MUTAION_TYPES.ADD_TODO](state, payload) {
       state.todos.push({
         id: state.idForTodo,
         title: payload,
@@ -27,31 +28,31 @@ export default new Vuex.Store({
       });
       state.idForTodo++;
     },
-    REMOVE_TODO(state, index) {
-      this.state.todos.splice(index, 1);
+    [MUTAION_TYPES.REMOVE_TODO](state, payload) {
+      this.state.todos.splice(payload, 1);
     },
-    EDIT_TODO(state, todo) {
-        todo.editing = true;
+    [MUTAION_TYPES.EDIT_TODO](state, payload) {
+        payload.editing = true;
     },
-    DONE_EDITING(state, todo) {
-        todo.editing = false;
+    [MUTAION_TYPES.DONE_EDITING](state, payload) {
+        payload.editing = false;
     }
   },
   actions: {
-    getTodo({ commit }, todo) {
-      commit("GET_TODO", todo);
+    getTodo({ commit }, payload) {
+      commit(MUTAION_TYPES.GET_TODO, payload);
     },
-    addTodo({commit}, todo) {
-        commit("ADD_TODO", todo);
+    addTodo({commit}, payload) {
+        commit(MUTAION_TYPES.ADD_TODO, payload);
     },
-    removeTodo({commit}, index) {
-        commit("REMOVE_TODO", index);
+    removeTodo({commit}, payload) {
+        commit(MUTAION_TYPES.REMOVE_TODO, payload);
     },
-    editTodo({commit}, todo) {
-        commit("EDIT_TODO", todo);
+    editTodo({commit}, payload) {
+        commit(MUTAION_TYPES.EDIT_TODO, payload);
     },
-    doneEditing({commit}, todo) {
-        commit("DONE_EDITING", todo);
+    doneEditing({commit}, payload) {
+        commit(MUTAION_TYPES.DONE_EDITING, payload);
     }
   }
 });
